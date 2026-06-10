@@ -34,8 +34,8 @@ class CashRegister:
         self.previous_transactions.append(transactions)# this basically stores the dictionaries
  
     def apply_discount(self):
-        if not self.previous_transactions:
-            print("There is no discount to apply")  
+        if not self.previous_transactions or self.discount==0:
+            print("There is no discount to apply.")  
             return
 
         last_transaction=self.previous_transactions.pop() 
@@ -55,4 +55,11 @@ class CashRegister:
         if not self.previous_transactions:
             print("There is no transaction to void")
             return
-    last_transaction=self.previous_transactions.pop()        
+        last_transaction=self.previous_transactions.pop()    
+
+        void_amount= last_transaction["price"]*last_transaction["quantity"]
+        self.total-=void_amount
+
+        for _ in range (last_transaction["quantity"]):
+            if last_transaction["item"] in self.items:
+                self.items.remove(last_transaction["item"])    
